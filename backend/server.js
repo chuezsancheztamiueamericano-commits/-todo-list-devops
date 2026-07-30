@@ -8,7 +8,22 @@ const tasksRouter = require('./routes/tasks');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Configure CORS with specific origins
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:3000', 'http://127.0.0.1:3000'];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 
 // API REST para las tareas

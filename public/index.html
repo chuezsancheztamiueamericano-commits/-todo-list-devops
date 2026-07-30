@@ -3,26 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List | TP DevOps UPSE</title>
+  <title>Tareas | TP DevOps UPSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-<h1>Mi Lista de Tareas - CI/CD OK</h1>
+  <main class="page">
+    <section class="card">
+      <header class="card-header">
+        <p class="eyebrow">Pendientes de hoy</p>
+        <div class="title-row">
+          <h1>Tu <em>lista</em></h1>
+          <span id="task-counter" class="counter">0/0</span>
+        </div>
+        <div class="divider"></div>
+        <div class="progress-track">
+          <div id="progress-fill" class="progress-fill"></div>
+        </div>
+      </header>
 
-    <form id="task-form" class="task-form">
-      <input type="text" id="task-input" placeholder="Escribe una nueva tarea..." required>
-      <button type="submit">Agregar</button>
-    </form>
+      <form id="task-form" class="task-form">
+        <input type="text" id="task-input" placeholder="¿Qué necesitas hacer?" required autocomplete="off">
+        <button type="submit" class="btn-add">Agregar</button>
+      </form>
 
-    <div class="filter-wrapper">
-      <input type="text" id="filter-input" placeholder="Filtrar tareas...">
-    </div>
+      <div class="filter-wrapper">
+        <input type="text" id="filter-input" placeholder="Buscar tarea..." autocomplete="off">
+      </div>
 
-    <ul id="task-list" class="task-list"></ul>
+      <ul id="task-list" class="task-list"></ul>
 
-    <p id="empty-message" class="empty-message" style="display:none;">No hay tareas para mostrar.</p>
-  </div>
+      <p id="empty-message" class="empty-message" style="display:none;">Todavía no hay tareas. Escribe la primera arriba.</p>
+    </section>
+  </main>
 
   <script src="app.js"></script>
 </body>

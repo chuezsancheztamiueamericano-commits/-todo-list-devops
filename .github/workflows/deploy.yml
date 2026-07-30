@@ -22,6 +22,26 @@ jobs:
           script: |
             cd ~/-todo-list-devops
             git pull origin main
-            cd backend
-            npm install --production
-            pm2 restart todo-app
+            
+            # Check if SSL certificates exist, if not create placeholder
+            if [ ! -f ./nginx/ssl/fullchain.pem ]; then
+              echo "Warning: SSL certificates not found. Please set up SSL certificates."
+              echo "Creating self-signed certificates for temporary use..."
+              mkdir -p ./nginx/ssl
+              openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+                -keyout ./nginx/ssl/privkey.pem \
+                -out ./nginx/ssl/fullchain.pem \
+                -subj "/CN=localhost"
+            fi
+            
+            # Deploy with Docker Compose
+            docker-compose down
+            docker-compose build
+            docker-compose up -d
+            
+            # Wait for services to be healthy
+            echo "Waiting for services to be healthy..."
+            sleep 30
+            
+            # Check status
+            docker-compose ps
