@@ -63,16 +63,56 @@ La aplicación estará disponible en `http://localhost:3000`
 
 ## 🐳 Despliegue en Producción
 
-### Configuración de GitHub Secrets
+### Opción 1: Despliegue con Dirección IP (Sin Dominio)
 
-Para el despliegue automático, configura los siguientes secrets en tu repositorio de GitHub:
+Si no tienes un dominio, puedes usar la dirección IP de tu VPS directamente.
 
-- `VPS_HOST`: Dirección IP o dominio de tu VPS
-- `VPS_USER`: Usuario SSH del VPS
-- `VPS_SSH_KEY`: Clave privada SSH (formato PEM)
-- `VPS_PORT`: Puerto SSH (default: 22)
+1. **Configurar GitHub Secrets:**
+   - `VPS_HOST`: Dirección IP de tu VPS (ej: 123.45.67.89)
+   - `VPS_USER`: Usuario SSH del VPS
+   - `VPS_SSH_KEY`: Clave privada SSH (formato PEM)
+   - `VPS_PORT`: Puerto SSH (default: 22)
 
-### Flujo de Despliegue
+2. **Configurar .env en VPS:**
+   ```bash
+   ALLOWED_ORIGINS=http://TU_IP_VPS,http://localhost:3000
+   ```
+
+3. **Acceso:** `http://TU_IP_VPS`
+
+### Opción 2: Dominio Gratuito
+
+Puedes obtener un dominio gratuito con estos servicios:
+
+#### DuckDNS (Gratis y Fácil)
+1. Ve a [duckdns.org](https://www.duckdns.org)
+2. Regístrate con tu cuenta de GitHub, Google, etc.
+3. Crea un subdominio gratuito (ej: `miapp.duckdns.org`)
+4. Configura tu VPS para actualizar la IP automáticamente
+
+#### No-IP (Gratis con renovación mensual)
+1. Ve a [noip.com](https://www.noip.com)
+2. Regístrate y crea un host gratuito
+3. Instala el cliente No-IP en tu VPS para actualizar la IP
+
+#### Configuración con Dominio Gratuito:
+1. **Configurar GitHub Secrets:**
+   - `VPS_HOST`: Tu dominio gratuito (ej: `miapp.duckdns.org`)
+   - `VPS_USER`: Usuario SSH del VPS
+   - `VPS_SSH_KEY`: Clave privada SSH
+   - `VPS_PORT`: Puerto SSH (default: 22)
+
+2. **Configurar SSL con Let's Encrypt:**
+   ```bash
+   sudo certbot certonly --standalone -d miapp.duckdns.org
+   ```
+
+3. **Configurar .env en VPS:**
+   ```bash
+   ALLOWED_ORIGINS=https://miapp.duckdns.org,http://localhost:3000
+   ```
+
+### Flujo de Despliegue Automático
 
 1. Push a la rama `main` activa el workflow de GitHub Actions
 2. El workflow se conecta al VPS vía SSH
