@@ -67,18 +67,20 @@ La aplicación estará disponible en `http://localhost:3000`
 
 Si no tienes un dominio, puedes usar la dirección IP de tu VPS directamente.
 
+**IP del VPS:** `159.223.130.149`
+
 1. **Configurar GitHub Secrets:**
-   - `VPS_HOST`: Dirección IP de tu VPS (ej: 123.45.67.89)
+   - `VPS_HOST`: `159.223.130.149`
    - `VPS_USER`: Usuario SSH del VPS
    - `VPS_SSH_KEY`: Clave privada SSH (formato PEM)
    - `VPS_PORT`: Puerto SSH (default: 22)
 
 2. **Configurar .env en VPS:**
    ```bash
-   ALLOWED_ORIGINS=http://TU_IP_VPS,http://localhost:3000
+   ALLOWED_ORIGINS=http://159.223.130.149,http://localhost:3000
    ```
 
-3. **Acceso:** `http://TU_IP_VPS`
+3. **Acceso:** `http://159.223.130.149`
 
 ### Opción 2: Dominio Gratuito
 

@@ -23,16 +23,23 @@ jobs:
             cd ~/-todo-list-devops
             git pull origin main
             
-            # Check if SSL certificates exist, if not create placeholder
+            # Check if SSL certificates exist
             if [ ! -f ./nginx/ssl/fullchain.pem ]; then
-              echo "Warning: SSL certificates not found. Please set up SSL certificates."
+              echo "Warning: SSL certificates not found."
               echo "Creating self-signed certificates for temporary use..."
               mkdir -p ./nginx/ssl
               openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
                 -keyout ./nginx/ssl/privkey.pem \
                 -out ./nginx/ssl/fullchain.pem \
-                -subj "/CN=localhost"
+                -subj "/CN=${{ secrets.VPS_HOST }}"
+              echo "Self-signed certificates created. For production SSL, use Let's Encrypt."
+            else
+              echo "SSL certificates found. Using existing certificates."
             fi
+            
+            # Set proper permissions for SSL certificates
+            chmod 644 ./nginx/ssl/fullchain.pem
+            chmod 600 ./nginx/ssl/privkey.pem
             
             # Deploy with Docker Compose
             docker-compose down
@@ -45,3 +52,7 @@ jobs:
             
             # Check status
             docker-compose ps
+            
+            echo "Deployment completed successfully!"
+            echo "Application available at: http://${{ secrets.VPS_HOST }}"
+            echo "If SSL certificates are configured, also available at: https://${{ secrets.VPS_HOST }}"
